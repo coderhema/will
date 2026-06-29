@@ -58,7 +58,7 @@ export default function WillApp() {
   }, []);
 
   return (
-    <main className="flex items-center justify-center min-h-screen bg-[#111] p-4">
+    <main className="flex items-center justify-center min-h-screen bg-[#111] p-4" style={{ fontSize: "1px" }}>
       {/* Mobile phone frame */}
       <div
         className="relative overflow-hidden"
@@ -126,14 +126,6 @@ export default function WillApp() {
           className="absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full z-50"
           style={{ width: 120, height: 4, background: "rgba(255,255,255,0.2)" }}
         />
-      </div>
-
-      {/* Screen label below the phone */}
-      <div
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center"
-        style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, letterSpacing: 2, fontWeight: 500 }}
-      >
-        {screen.toUpperCase().replace(/-/g, " ")}
       </div>
     </main>
   );
