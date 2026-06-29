@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: "Inter", "ui-sans-serif", system-ui, sans-serif;
+  --font-mono: "ui-monospace", "SFMono-Regular", monospace;
+
+  /* WILL design tokens — dark-first palette */
+  --color-background: #000000;
+  --color-surface:    #0a0a0a;
+  --color-surface-2:  #111111;
+  --color-surface-3:  #1a1a1a;
+  --color-border:     rgba(255,255,255,0.08);
+  --color-border-active: rgba(255,255,255,0.30);
+
+  --color-foreground:  #ffffff;
+  --color-muted:       rgba(255,255,255,0.28);
+  --color-subtle:      rgba(255,255,255,0.15);
+
+  /* Accent — amber ring matching the WILL logo */
+  --color-accent:      #e0a046;
+  --color-accent-2:    #db9d46;
+
+  /* Status */
+  --color-success:     #2eff89;
+  --color-active:      #bda9f5;
+  --color-active-dim:  #9e6cf0;
+  --color-done:        #502eb0;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--color-background);
+}
+
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
