@@ -58,7 +58,7 @@ export default function WillApp() {
   }, []);
 
   return (
-    <main className="flex items-center justify-center min-h-screen bg-[#111] p-4" style={{ fontSize: "1px" }}>
+    <main className="flex items-center justify-center min-h-screen bg-[#111] p-4" style={{ fontSize: "1px", paddingBottom: 0 }}>
       {/* Mobile phone frame */}
       <div
         className="relative overflow-hidden"
@@ -71,16 +71,6 @@ export default function WillApp() {
           flexShrink: 0,
         }}
       >
-        {/* Notch */}
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 z-50"
-          style={{
-            width: 120,
-            height: 34,
-            background: "#000",
-            borderRadius: "0 0 20px 20px",
-          }}
-        />
 
         {/* Screens */}
         <div className="absolute inset-0" style={{ paddingTop: 0 }}>
