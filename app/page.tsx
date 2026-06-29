@@ -27,14 +27,9 @@ export default function WillApp() {
     }
   }, [screen]);
 
-  const handleSelectTask = useCallback((task: string) => {
+  const handleSelectTask = useCallback((task: string, detail?: string) => {
     setSelectedTask(task);
-    setScreen("home-action");
-  }, []);
-
-  const handleStart = useCallback((task: string, detail: string) => {
-    setSelectedTask(task);
-    setTaskDetail(detail);
+    if (detail) setTaskDetail(detail);
     setScreen("agent-working");
   }, []);
 

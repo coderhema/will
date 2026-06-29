@@ -51,7 +51,7 @@ function getStyle(absDist: number) {
 }
 
 interface HomeScreenProps {
-  onSelectTask: (task: string) => void;
+  onSelectTask: (task: string, detail?: string) => void;
 }
 
 export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
@@ -87,7 +87,7 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
     }
   }, [isDragging, smoothOffset]);
 
-  const wheelTimeoutRef = useRef<NodeJS.Timeout>();
+  const wheelTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   
   const handleWheel = useCallback((e: WheelEvent) => {
     e.preventDefault();
@@ -166,13 +166,14 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
 
   const handleSubmit = () => {
     const task = TASKS[selectedIndex];
-    const suggestions = SUGGESTIONS[task.action] ?? SUGGESTIONS.default;
-    onSelectTask(task.name);
+    const detail = suggestions[0];
+    onSelectTask(task.name, detail);
   };
 
   const handlePillSubmit = () => {
     const task = TASKS[selectedIndex];
-    onSelectTask(task.name);
+    const detail = pillValue.trim() || suggestions[0];
+    onSelectTask(task.name, detail);
   };
 
   const currentTask = TASKS[selectedIndex];
@@ -272,28 +273,34 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
             <div
               className="absolute pointer-events-auto"
               style={{
-                left: 36,
-                top: CENTER_Y - 2,
-                width: 260,
-                height: 52,
+                left: 28,
+                right: 16,
+                top: CENTER_Y - 6,
+                height: 60,
                 zIndex: 20,
                 opacity: pillMounted ? 1 : 0,
-                transform: pillMounted ? "scale(1) translateY(0px)" : "scale(0.88) translateY(8px)",
-                transition: "opacity 0.28s cubic-bezier(0.34,1.2,0.64,1), transform 0.28s cubic-bezier(0.34,1.2,0.64,1)",
+                transform: pillMounted ? "scale(1) translateY(0px)" : "scale(0.92) translateY(10px)",
+                transition: "opacity 0.30s cubic-bezier(0.34,1.2,0.64,1), transform 0.30s cubic-bezier(0.34,1.2,0.64,1)",
                 transformOrigin: "left center",
               }}
             >
               <div
                 className="flex flex-row items-center gap-2 w-full h-full"
                 style={{
-                  background: "#161616",
-                  border: "1.5px solid rgba(255,255,255,0.22)",
-                  borderRadius: 14,
-                  padding: "6px 8px 6px 16px",
-                  backdropFilter: "blur(8px)",
-                  boxShadow: "0 4px 32px rgba(0,0,0,0.5)",
+                  background: "#111111",
+                  border: "1.5px solid rgba(255,255,255,0.18)",
+                  borderRadius: 16,
+                  padding: "6px 6px 6px 18px",
+                  boxShadow: "0 0 0 4px rgba(255,255,255,0.04), 0 8px 40px rgba(0,0,0,0.7)",
                 }}
               >
+                {/* Task icon */}
+                <img
+                  src={TASKS[selectedIndex].icon}
+                  alt={TASKS[selectedIndex].name}
+                  style={{ width: 22, height: 22, flexShrink: 0, opacity: 0.7 }}
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                />
                 <input
                   ref={pillInputRef}
                   value={pillValue}
@@ -303,15 +310,26 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
                     if (e.key === "Escape") closePill();
                   }}
                   placeholder={suggestions[0]}
-                  className="flex-1 bg-transparent outline-none text-white placeholder-white/40 min-w-0"
-                  style={{ fontSize: 18, fontWeight: 600 }}
+                  className="flex-1 bg-transparent outline-none text-white min-w-0"
+                  style={{ fontSize: 17, fontWeight: 600, color: "#fff" }}
                 />
+                {/* Arrow submit button */}
                 <button
                   onClick={handlePillSubmit}
-                  className="flex items-center justify-center shrink-0 rounded-[10px]"
-                  style={{ width: 36, height: 36, background: "#ffffff" }}
+                  className="flex items-center justify-center shrink-0 rounded-[11px]"
+                  style={{
+                    width: 44,
+                    height: 44,
+                    background: pillValue.trim() ? "#ffffff" : "rgba(255,255,255,0.12)",
+                    transition: "background 0.18s ease",
+                    flexShrink: 0,
+                  }}
                 >
-                  <ArrowUpRight size={16} color="#000000" weight="bold" />
+                  <ArrowUpRight
+                    size={18}
+                    color={pillValue.trim() ? "#000000" : "rgba(255,255,255,0.5)"}
+                    weight="bold"
+                  />
                 </button>
               </div>
             </div>
@@ -356,37 +374,40 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
         className="w-full flex flex-col items-center gap-2 shrink-0 px-4"
         style={{ paddingBottom: 28, paddingTop: 4 }}
       >
-        {/* Suggestion pills — appear when pill is open */}
+        {/* Suggestion pills — staggered fade-in when pill opens */}
         {pillOpen && (
           <div
-            className="flex flex-row gap-2 flex-wrap justify-center"
-            style={{
-              maxWidth: 320,
-              opacity: pillMounted ? 1 : 0,
-              transform: pillMounted ? "translateY(0)" : "translateY(6px)",
-              transition: "opacity 0.24s ease 0.06s, transform 0.24s ease 0.06s",
-            }}
+            className="flex flex-row gap-2 flex-wrap justify-center w-full"
+            style={{ maxWidth: 340, padding: "0 4px" }}
           >
-            {suggestions.map((s, i) => (
-              <button
-                key={s}
-                onClick={() => { setPillValue(s); pillInputRef.current?.focus(); }}
-                className="rounded-full"
-                style={{
-                  height: 30,
-                  padding: "0 14px",
-                  fontSize: 12,
-                  fontWeight: 500,
-                  color: "rgba(255,255,255,0.7)",
-                  background: i === suggestions.length - 1 ? "#272727" : "rgba(255,255,255,0.08)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  cursor: "pointer",
-                  transition: "background 0.15s ease",
-                }}
-              >
-                {s}
-              </button>
-            ))}
+            {suggestions.map((s, i) => {
+              const isActive = pillValue === s;
+              return (
+                <button
+                  key={s}
+                  onClick={() => { setPillValue(s); pillInputRef.current?.focus(); }}
+                  className="rounded-full"
+                  style={{
+                    height: 32,
+                    padding: "0 16px",
+                    fontSize: 12,
+                    fontWeight: 500,
+                    color: isActive ? "#000" : "rgba(255,255,255,0.7)",
+                    background: isActive ? "#ffffff" : "rgba(255,255,255,0.07)",
+                    border: `1px solid ${isActive ? "#ffffff" : "rgba(255,255,255,0.12)"}`,
+                    cursor: "pointer",
+                    transition: "background 0.15s ease, color 0.15s ease, border-color 0.15s ease",
+                    opacity: pillMounted ? 1 : 0,
+                    transform: pillMounted ? "translateY(0) scale(1)" : "translateY(8px) scale(0.95)",
+                    // stagger each pill
+                    transitionDelay: pillMounted ? `${i * 40}ms` : "0ms",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {s}
+                </button>
+              );
+            })}
           </div>
         )}
 
