@@ -4,25 +4,32 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, Sparkle, ArrowUpRight, X } from "@phosphor-icons/react";
 import WillLogo from "@/components/will-logo";
 
-const TASKS = [
-  "Marketing",
-  "Design",
-  "Strategy",
-  "Write",
-  "Analyze",
-  "Profit",
-  "Growth",
-  "Code",
-  "Plan",
-  "Research",
+// Task structure with action names and icon URLs from svgl.app
+interface Task {
+  name: string;
+  action: string;
+  icon: string;
+}
+
+const TASKS: Task[] = [
+  { name: "Marketing", action: "Create campaigns", icon: "https://cdn.svgl.app/logos/mailchimp.svg" },
+  { name: "Design", action: "Design layouts", icon: "https://cdn.svgl.app/logos/figma.svg" },
+  { name: "Strategy", action: "Plan strategy", icon: "https://cdn.svgl.app/logos/miro.svg" },
+  { name: "Write", action: "Write content", icon: "https://cdn.svgl.app/logos/notion.svg" },
+  { name: "Analyze", action: "Analyze data", icon: "https://cdn.svgl.app/logos/google-analytics.svg" },
+  { name: "Profit", action: "Monetize", icon: "https://cdn.svgl.app/logos/stripe.svg" },
+  { name: "Growth", action: "Grow audience", icon: "https://cdn.svgl.app/logos/databox.svg" },
+  { name: "Code", action: "Write code", icon: "https://cdn.svgl.app/logos/github.svg" },
+  { name: "Plan", action: "Organize tasks", icon: "https://cdn.svgl.app/logos/asana.svg" },
+  { name: "Research", action: "Gather insights", icon: "https://cdn.svgl.app/logos/typeform.svg" },
 ];
 
 const SUGGESTIONS: Record<string, string[]> = {
-  Marketing: ["Social ads", "Email blast", "Brand story", "Ad copy"],
-  Design:    ["UI kit", "Brand identity", "Ad creative", "Landing page"],
-  Write:     ["Blog post", "Product copy", "Email blast", "Brand story"],
-  Analyze:   ["Market data", "User research", "Competitor", "A/B test"],
-  Strategy:  ["Go-to-market", "Positioning", "Roadmap", "SWOT"],
+  "Create campaigns": ["Social ads", "Email blast", "Brand story", "Ad copy"],
+  "Design layouts":    ["UI kit", "Brand identity", "Ad creative", "Landing page"],
+  "Write content":     ["Blog post", "Product copy", "Email blast", "Brand story"],
+  "Analyze data":   ["Market data", "User research", "Competitor", "A/B test"],
+  "Plan strategy":  ["Go-to-market", "Positioning", "Roadmap", "SWOT"],
   default:   ["Social ads", "Email blast", "Brand story", "Ad copy"],
 };
 
@@ -80,13 +87,26 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
     }
   }, [isDragging, smoothOffset]);
 
+  const wheelTimeoutRef = useRef<NodeJS.Timeout>();
+  
   const handleWheel = useCallback((e: WheelEvent) => {
     e.preventDefault();
-    const step = e.deltaY > 5 ? 1 : e.deltaY < -5 ? -1 : 0;
+    // Smooth delta accumulation for fluid scrolling
+    const delta = Math.max(-1, Math.min(1, e.deltaY / 120));
+    const step = delta > 0.1 ? 1 : delta < -0.1 ? -1 : 0;
+    
     if (step !== 0) {
+      // Clear any pending timeout to prevent queue buildup
+      if (wheelTimeoutRef.current) clearTimeout(wheelTimeoutRef.current);
+      
       setSelectedIndex((i) => ((i + step) % TASKS.length + TASKS.length) % TASKS.length);
-      // briefly show smooth bounce offset then spring back
-      setSmoothOffset(step * 0.35);
+      // Smooth easing offset with dampening
+      setSmoothOffset(step * 0.25);
+      
+      // Auto-damp the smooth offset over time for fluid feel
+      wheelTimeoutRef.current = setTimeout(() => {
+        setSmoothOffset((prev) => prev * 0.5);
+      }, 80);
     }
   }, []);
 
@@ -94,7 +114,10 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
     const el = containerRef.current;
     if (!el) return;
     el.addEventListener("wheel", handleWheel, { passive: false });
-    return () => el.removeEventListener("wheel", handleWheel);
+    return () => {
+      el.removeEventListener("wheel", handleWheel);
+      if (wheelTimeoutRef.current) clearTimeout(wheelTimeoutRef.current);
+    };
   }, [handleWheel]);
 
   const onPointerDown = (e: React.PointerEvent) => {
@@ -108,12 +131,12 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
   const onPointerMove = (e: React.PointerEvent) => {
     if (!isDragging) return;
     const delta = dragStartY.current - e.clientY;
-    const rawSteps = delta / (SLOT_HEIGHT * 0.6);
+    const rawSteps = delta / (SLOT_HEIGHT * 0.5); // responsive drag sensitivity
     const steps = Math.round(rawSteps);
     const subStep = rawSteps - steps; // fractional remainder for smooth feel
     const raw = dragStartIndex.current + steps;
     setSelectedIndex(((raw % TASKS.length) + TASKS.length) % TASKS.length);
-    setSmoothOffset(subStep * 0.5);
+    setSmoothOffset(subStep * 0.35); // slightly damped for fluid feel
     dragRawOffset.current = rawSteps;
   };
 
@@ -143,17 +166,17 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
 
   const handleSubmit = () => {
     const task = TASKS[selectedIndex];
-    const suggestions = SUGGESTIONS[task] ?? SUGGESTIONS.default;
-    onSelectTask(task);
+    const suggestions = SUGGESTIONS[task.action] ?? SUGGESTIONS.default;
+    onSelectTask(task.name);
   };
 
   const handlePillSubmit = () => {
     const task = TASKS[selectedIndex];
-    onSelectTask(task);
+    onSelectTask(task.name);
   };
 
   const currentTask = TASKS[selectedIndex];
-  const suggestions = SUGGESTIONS[currentTask] ?? SUGGESTIONS.default;
+  const suggestions = SUGGESTIONS[currentTask.action] ?? SUGGESTIONS.default;
 
   // Build visible items
   const visibleItems = TASKS.map((task, index) => {
@@ -194,15 +217,15 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
             const sign = dist > 0 ? 1 : dist < 0 ? -1 : 0;
             const isSelected = dist === 0;
 
-            // When pill is open, selected word compresses/fades to make room
+            // When pill is open, selected item compresses/fades to make room
             const pillShrink = isSelected && pillOpen;
-            const wordOpacity = pillShrink ? 0 : s.opacity;
-            const wordScale = pillShrink ? 0.7 : 1;
+            const contentOpacity = pillShrink ? 0 : s.opacity;
+            const contentScale = pillShrink ? 0.7 : 1;
 
             return (
               <div
-                key={task}
-                className="absolute select-none pointer-events-none"
+                key={task.name}
+                className="absolute select-none pointer-events-none flex items-center gap-2"
                 style={{
                   left: 36,
                   top: topY,
@@ -210,11 +233,11 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
                   lineHeight: `${s.fontSize}px`,
                   fontWeight: 700,
                   color: "#ffffff",
-                  opacity: wordOpacity,
+                  opacity: contentOpacity,
                   filter: s.blur > 0 ? `blur(${s.blur}px)` : "none",
                   transform: [
                     sign !== 0 ? `rotate(${sign * s.rotate}deg)` : "",
-                    pillShrink ? `scale(${wordScale}) translateX(-20px)` : "",
+                    pillShrink ? `scale(${contentScale}) translateX(-20px)` : "",
                   ].filter(Boolean).join(" ") || "none",
                   transformOrigin: "top left",
                   whiteSpace: "nowrap",
@@ -224,7 +247,22 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
                   willChange: "transform, top, opacity",
                 }}
               >
-                {task}
+                {/* Icon from svgl */}
+                <img
+                  src={task.icon}
+                  alt={task.name}
+                  style={{
+                    width: Math.max(s.fontSize * 0.7, 24),
+                    height: Math.max(s.fontSize * 0.7, 24),
+                    flexShrink: 0,
+                  }}
+                  onError={(e) => {
+                    // fallback: hide if icon doesn't load
+                    (e.target as HTMLImageElement).style.display = "none";
+                  }}
+                />
+                {/* Action text instead of task name */}
+                {task.action}
               </div>
             );
           })}
