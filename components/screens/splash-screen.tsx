@@ -12,7 +12,7 @@ export default function SplashScreen({ onDone }: SplashScreenProps) {
       className="w-full h-full flex items-center justify-center bg-black cursor-pointer select-none"
       onClick={onDone}
     >
-      <WillLogo label="WILL" size="lg" ringColor="#ffffff" dotColor="#ffffff" labelColor="#ffffff" />
+      <WillLogo variant="splash" label="WILL" />
     </div>
   );
 }
