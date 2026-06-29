@@ -100,11 +100,11 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
       {/* Header logo */}
       <WillLogo variant="home" label="READY" />
 
-      {/* Scroll section — fixed 340×632 */}
+      {/* Scroll section — fills available space between header and CTA */}
       <div
         ref={containerRef}
-        className="relative shrink-0 overflow-hidden cursor-grab active:cursor-grabbing"
-        style={{ width: 340, height: 632, background: "#000000", touchAction: "none" }}
+        className="relative flex-1 w-full overflow-hidden cursor-grab active:cursor-grabbing"
+        style={{ maxWidth: 340, minHeight: 200, background: "#000000", touchAction: "none" }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -170,11 +170,11 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
       </div>
 
       {/* Bottom CTA */}
-      <div className="w-full flex flex-col items-center gap-4">
+      <div className="w-full flex flex-col items-center gap-3 shrink-0" style={{ paddingBottom: 20 }}>
         <button
           onClick={() => onSelectTask(TASKS[selectedIndex])}
-          className="flex flex-row items-center gap-2 bg-white text-black font-bold rounded-full cursor-pointer select-none shrink-0"
-          style={{ padding: "15px 60px", fontSize: 15, letterSpacing: 0.15 }}
+          className="flex flex-row items-center gap-2 bg-white text-black font-bold rounded-full cursor-pointer select-none"
+          style={{ padding: "16px 56px", fontSize: 15, letterSpacing: 0.15, minWidth: 220, justifyContent: "center" }}
         >
           <Sparkle size={17} weight="fill" color="#000000" />
           Start Creating
