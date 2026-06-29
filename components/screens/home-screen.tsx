@@ -100,11 +100,13 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
       {/* Header logo */}
       <WillLogo variant="home" label="READY" />
 
-      {/* Scroll section — fills available space between header and CTA */}
-      <div
-        ref={containerRef}
-        className="relative flex-1 w-full overflow-hidden cursor-grab active:cursor-grabbing"
-        style={{ maxWidth: 340, minHeight: 200, background: "#000000", touchAction: "none" }}
+      {/* Center wrapper — grows to fill space, centers scroll wheel */}
+      <div className="flex-1 flex items-center justify-center w-full">
+        {/* Scroll section — fixed height, vertically centered */}
+        <div
+          ref={containerRef}
+          className="relative overflow-hidden cursor-grab active:cursor-grabbing"
+          style={{ width: 340, height: 632, background: "#000000", touchAction: "none" }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -167,19 +169,20 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
             zIndex: 11,
           }}
         />
+        </div>
       </div>
 
       {/* Bottom CTA */}
-      <div className="w-full flex flex-col items-center gap-3 shrink-0" style={{ paddingBottom: 20 }}>
+      <div className="w-full flex flex-col items-center gap-2 shrink-0 px-4" style={{ paddingBottom: 24 }}>
         <button
           onClick={() => onSelectTask(TASKS[selectedIndex])}
           className="flex flex-row items-center gap-2 bg-white text-black font-bold rounded-full cursor-pointer select-none"
-          style={{ padding: "16px 56px", fontSize: 15, letterSpacing: 0.15, minWidth: 220, justifyContent: "center" }}
+          style={{ padding: "13px 48px", fontSize: 15, letterSpacing: 0.15, justifyContent: "center" }}
         >
-          <Sparkle size={17} weight="fill" color="#000000" />
+          <Sparkle size={16} weight="fill" color="#000000" />
           Start Creating
         </button>
-        <p style={{ fontSize: 11, letterSpacing: "1.98px", color: "rgba(255,255,255,0.2)", fontWeight: 500, textAlign: "center", margin: 0 }}>
+        <p style={{ fontSize: 10, letterSpacing: "1.5px", color: "rgba(255,255,255,0.15)", fontWeight: 500, textAlign: "center", margin: 0 }}>
           Drag or scroll to choose
         </p>
       </div>
