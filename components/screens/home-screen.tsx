@@ -12,24 +12,24 @@ interface Task {
 }
 
 const TASKS: Task[] = [
-  { name: "Marketing", action: "Create campaigns", icon: "https://cdn.svgl.app/logos/mailchimp.svg" },
-  { name: "Design", action: "Design layouts", icon: "https://cdn.svgl.app/logos/figma.svg" },
-  { name: "Strategy", action: "Plan strategy", icon: "https://cdn.svgl.app/logos/miro.svg" },
-  { name: "Write", action: "Write content", icon: "https://cdn.svgl.app/logos/notion.svg" },
-  { name: "Analyze", action: "Analyze data", icon: "https://cdn.svgl.app/logos/google-analytics.svg" },
+  { name: "Marketing", action: "Create", icon: "https://cdn.svgl.app/logos/mailchimp.svg" },
+  { name: "Design", action: "Design", icon: "https://cdn.svgl.app/logos/figma.svg" },
+  { name: "Strategy", action: "Plan", icon: "https://cdn.svgl.app/logos/miro.svg" },
+  { name: "Write", action: "Write", icon: "https://cdn.svgl.app/logos/notion.svg" },
+  { name: "Analyze", action: "Analyze", icon: "https://cdn.svgl.app/logos/google-analytics.svg" },
   { name: "Profit", action: "Monetize", icon: "https://cdn.svgl.app/logos/stripe.svg" },
-  { name: "Growth", action: "Grow audience", icon: "https://cdn.svgl.app/logos/databox.svg" },
-  { name: "Code", action: "Write code", icon: "https://cdn.svgl.app/logos/github.svg" },
-  { name: "Plan", action: "Organize tasks", icon: "https://cdn.svgl.app/logos/asana.svg" },
-  { name: "Research", action: "Gather insights", icon: "https://cdn.svgl.app/logos/typeform.svg" },
+  { name: "Growth", action: "Grow", icon: "https://cdn.svgl.app/logos/databox.svg" },
+  { name: "Code", action: "Code", icon: "https://cdn.svgl.app/logos/github.svg" },
+  { name: "Plan", action: "Organize", icon: "https://cdn.svgl.app/logos/asana.svg" },
+  { name: "Research", action: "Gather", icon: "https://cdn.svgl.app/logos/typeform.svg" },
 ];
 
 const SUGGESTIONS: Record<string, string[]> = {
-  "Create campaigns": ["Social ads", "Email blast", "Brand story", "Ad copy"],
-  "Design layouts":    ["UI kit", "Brand identity", "Ad creative", "Landing page"],
-  "Write content":     ["Blog post", "Product copy", "Email blast", "Brand story"],
-  "Analyze data":   ["Market data", "User research", "Competitor", "A/B test"],
-  "Plan strategy":  ["Go-to-market", "Positioning", "Roadmap", "SWOT"],
+  "Create": ["Social ads", "Email blast", "Brand story", "Ad copy"],
+  "Design":    ["UI kit", "Brand identity", "Ad creative", "Landing page"],
+  "Write":     ["Blog post", "Product copy", "Email blast", "Brand story"],
+  "Analyze":   ["Market data", "User research", "Competitor", "A/B test"],
+  "Plan":  ["Go-to-market", "Positioning", "Roadmap", "SWOT"],
   default:   ["Social ads", "Email blast", "Brand story", "Ad copy"],
 };
 
