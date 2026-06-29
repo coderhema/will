@@ -129,10 +129,36 @@ export default function WillApp() {
           <p className="text-white/40 text-sm leading-relaxed" style={{ maxWidth: 260 }}>
             Drag or scroll to choose a task, then let WILL handle the rest — from research to finished output.
           </p>
-          <div className="flex flex-col gap-2">
-            {["Design", "Marketing", "Strategy", "Write", "Analyze", "Research"].map((t) => (
-              <span key={t} className="text-white/20 text-xs font-medium tracking-wider uppercase">{t}</span>
-            ))}
+          {/* Streaming ticker — endless vertical scroll */}
+          <div style={{ height: 180, overflow: "hidden", position: "relative" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+                animation: "will-ticker 12s linear infinite",
+              }}
+            >
+              {[
+                "Design", "Marketing", "Strategy", "Write", "Analyze",
+                "Research", "Branding", "Content", "Growth", "Code",
+                "Campaigns", "Copy", "Pitch", "Plan", "Optimize",
+                // duplicate for seamless loop
+                "Design", "Marketing", "Strategy", "Write", "Analyze",
+                "Research", "Branding", "Content", "Growth", "Code",
+                "Campaigns", "Copy", "Pitch", "Plan", "Optimize",
+              ].map((t, i) => (
+                <span
+                  key={i}
+                  className="text-xs font-semibold tracking-[2.5px] uppercase"
+                  style={{ color: i % 5 === 0 ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.18)" }}
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+            {/* fade edges */}
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, #000 0%, transparent 18%, transparent 82%, #000 100%)", pointerEvents: "none" }} />
           </div>
         </div>
       </div>
