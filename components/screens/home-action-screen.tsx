@@ -232,19 +232,19 @@ export default function HomeActionScreen({ initialTask, onCancel, onStart }: Hom
       </div>
 
       {/* Bottom section */}
-      <div className="w-full flex flex-col items-center gap-4 bg-black" style={{ paddingTop: 0 }}>
-        {/* Suggestion pills */}
-        <div className="flex flex-row gap-2 items-center flex-wrap justify-center" style={{ padding: "0 5px" }}>
+      <div className="w-full flex flex-col items-center gap-3 shrink-0 bg-black px-4" style={{ paddingTop: 0, paddingBottom: 8 }}>
+        {/* Suggestion pills — 2×2 grid on mobile so all are visible */}
+        <div className="grid grid-cols-2 gap-2 w-full" style={{ maxWidth: 320 }}>
           {suggestions.map((s) => {
             const isActive = s === suggestions[suggestions.length - 1];
             return (
               <button
                 key={s}
                 onClick={() => setInlineValue(s)}
-                className="shrink-0 rounded-full"
+                className="rounded-full text-center"
                 style={{
-                  height: 35,
-                  padding: "6px 14px",
+                  height: 34,
+                  padding: "0 12px",
                   fontSize: 12,
                   fontWeight: 500,
                   color: "rgba(255,255,255,0.75)",
@@ -252,6 +252,8 @@ export default function HomeActionScreen({ initialTask, onCancel, onStart }: Hom
                   border: "none",
                   whiteSpace: "nowrap",
                   cursor: "pointer",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
                 }}
               >
                 {s}
@@ -260,12 +262,12 @@ export default function HomeActionScreen({ initialTask, onCancel, onStart }: Hom
           })}
         </div>
 
-        {/* Cancel CTA — matches reference exactly */}
+        {/* Cancel CTA */}
         <button
           onClick={onCancel}
           className="flex flex-row items-center gap-2 font-bold rounded-full shrink-0"
           style={{
-            padding: "15px 60px",
+            padding: "12px 52px",
             fontSize: 15,
             letterSpacing: 0.15,
             background: "#1a1a1a",
@@ -277,10 +279,6 @@ export default function HomeActionScreen({ initialTask, onCancel, onStart }: Hom
           <X size={16} color="#ffffff" weight="bold" />
           Cancel
         </button>
-
-        <p style={{ fontSize: 11, letterSpacing: "1.98px", color: "rgba(255,255,255,0.2)", fontWeight: 500, textAlign: "center", margin: 0 }}>
-          Drag or scroll to choose
-        </p>
       </div>
     </div>
   );
