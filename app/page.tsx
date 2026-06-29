@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useState } from "react";
 import SplashScreen from "@/components/screens/splash-screen";
 import HomeScreen from "@/components/screens/home-screen";
-import HomeActionScreen from "@/components/screens/home-action-screen";
 import AgentWorkingScreen from "@/components/screens/agent-working-screen";
 import AgentProgressScreen from "@/components/screens/agent-progress-screen";
 import AgentDesignScreen from "@/components/screens/agent-design-screen";
@@ -11,7 +10,6 @@ import AgentDesignScreen from "@/components/screens/agent-design-screen";
 type Screen =
   | "splash"
   | "home"
-  | "home-action"
   | "agent-working"
   | "agent-progress"
   | "agent-design";
@@ -64,13 +62,6 @@ export default function WillApp() {
       )}
       {screen === "home" && (
         <HomeScreen onSelectTask={handleSelectTask} />
-      )}
-      {screen === "home-action" && (
-        <HomeActionScreen
-          initialTask={selectedTask}
-          onCancel={() => setScreen("home")}
-          onStart={handleStart}
-        />
       )}
       {screen === "agent-working" && (
         <AgentWorkingScreen
