@@ -109,26 +109,31 @@ export default function WillApp() {
         />
       </div>
 
-      {/* ── Desktop: centered panel, no phone chrome ── */}
-      <div className="hidden md:flex items-center justify-center min-h-screen bg-[#111]">
+      {/* ── Desktop: full-screen row-reverse two-column layout ── */}
+      <div className="hidden md:flex flex-row-reverse items-stretch min-h-screen bg-black">
+        {/* Left column — task wheel (fills remaining width) */}
+        <div className="flex-1 relative overflow-hidden">
+          {screenContent}
+        </div>
+        {/* Right column — branding / info panel */}
         <div
-          className="relative overflow-hidden"
-          style={{
-            width: 390,
-            height: 844,
-            borderRadius: 16,
-            background: "#000",
-            flexShrink: 0,
-          }}
+          className="flex flex-col items-start justify-center shrink-0 gap-6"
+          style={{ width: 360, padding: "60px 48px", borderRight: "1px solid rgba(255,255,255,0.07)" }}
         >
-          <div className="absolute inset-0">
-            {screenContent}
+          <div>
+            <p className="text-white/30 text-xs font-semibold tracking-[3px] uppercase mb-3">WILL</p>
+            <h1 className="text-white font-bold leading-tight" style={{ fontSize: 38 }}>
+              Your AI creative<br />agent
+            </h1>
           </div>
-          {/* Home indicator */}
-          <div
-            className="absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full z-50"
-            style={{ width: 120, height: 4, background: "rgba(255,255,255,0.2)" }}
-          />
+          <p className="text-white/40 text-sm leading-relaxed" style={{ maxWidth: 260 }}>
+            Drag or scroll to choose a task, then let WILL handle the rest — from research to finished output.
+          </p>
+          <div className="flex flex-col gap-2">
+            {["Design", "Marketing", "Strategy", "Write", "Analyze", "Research"].map((t) => (
+              <span key={t} className="text-white/20 text-xs font-medium tracking-wider uppercase">{t}</span>
+            ))}
+          </div>
         </div>
       </div>
     </main>

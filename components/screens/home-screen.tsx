@@ -20,7 +20,7 @@ const TASKS = [
 ];
 
 const SLOT_HEIGHT = 68; // px between each item
-const CENTER_Y = 320;   // top of selected item in the 632px scroll area
+const CENTER_Y = 185;   // top of selected item in the 420px scroll area
 
 interface SlotStyle {
   fontSize: number;
@@ -106,7 +106,7 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
         <div
           ref={containerRef}
           className="relative overflow-hidden cursor-grab active:cursor-grabbing"
-          style={{ width: 340, height: 632, background: "#000000", touchAction: "none" }}
+          style={{ width: 340, height: 420, background: "#000000", touchAction: "none" }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
