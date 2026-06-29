@@ -100,11 +100,13 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
       {/* Header logo */}
       <WillLogo variant="home" label="READY" />
 
-      {/* Scroll section — fills available space between header and CTA */}
-      <div
-        ref={containerRef}
-        className="relative flex-1 w-full overflow-hidden cursor-grab active:cursor-grabbing"
-        style={{ maxWidth: 340, minHeight: 200, background: "#000000", touchAction: "none" }}
+      {/* Center wrapper — grows to fill space, centers scroll wheel */}
+      <div className="flex-1 flex items-center justify-center w-full">
+        {/* Scroll section — fixed height, vertically centered */}
+        <div
+          ref={containerRef}
+          className="relative overflow-hidden cursor-grab active:cursor-grabbing"
+          style={{ width: 340, height: 632, background: "#000000", touchAction: "none" }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -167,6 +169,7 @@ export default function HomeScreen({ onSelectTask }: HomeScreenProps) {
             zIndex: 11,
           }}
         />
+        </div>
       </div>
 
       {/* Bottom CTA */}
