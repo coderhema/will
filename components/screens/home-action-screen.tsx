@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import { ArrowRight, ArrowUpRight, X } from "@phosphor-icons/react";
 import WillLogo from "@/components/will-logo";
 
 const TASKS = [
@@ -156,18 +157,12 @@ export default function HomeActionScreen({ initialTask, onCancel, onStart }: Hom
         })}
 
         {/* Arrow indicator */}
-        <svg
-          viewBox="0 0 14 14"
-          preserveAspectRatio="xMidYMid meet"
-          xmlns="http://www.w3.org/2000/svg"
-          className="absolute pointer-events-none"
-          style={{ width: 24, height: 24, left: 0, top: CENTER_Y + 13 }}
+        <div
+          className="absolute pointer-events-none flex items-center"
+          style={{ left: 0, top: CENTER_Y + 13 }}
         >
-          <path
-            d="M6.9 2.352q-.181.027-.321.167-.113.113-.147.28-.034.167.02.321.027.085.26.325.232.236 1.364 1.371 1.582 1.582 1.582 1.596 0 .014-3.456.014l-3.445 0-.085.041q-.222.113-.301.338-.075.222.007.434.058.096.14.181.085.082.167.12.085.034.533.034l3.011 0q3.428 0 3.428.014 0 .014-1.582 1.596-1.132 1.135-1.364 1.374-.232.236-.26.321-.055.154-.02.321.034.167.147.28.181.181.42.181h.041q.113 0 .198-.055.14-.099.516-.465l1.682-1.678q2.112-2.102 2.153-2.184.072-.126.072-.28 0-.154-.072-.28-.041-.082-2.15-2.181-2.105-2.102-2.177-2.136-.068-.038-.236-.065-.041 0-.126.014z"
-            fill="#ffffff"
-          />
-        </svg>
+          <ArrowRight size={24} color="#ffffff" weight="bold" />
+        </div>
 
         {/* Top gradient */}
         <div
@@ -230,12 +225,7 @@ export default function HomeActionScreen({ initialTask, onCancel, onStart }: Hom
               className="flex items-center justify-center shrink-0 rounded-[6px]"
               style={{ width: 31, height: 29, background: "#272727" }}
             >
-              <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style={{ width: 14, height: 14 }}>
-                <path
-                  d="M11.156 3.5v5.688q0 .273-.191.465-.191.191-.465.191-.273 0-.465-.191-.191-.192-.191-.465V4.898L3.988 10.75q-.219.219-.492.219-.273 0-.465-.192-.191-.191-.191-.464 0-.273.219-.438l5.851-5.906-4.101 0q-.273 0-.465-.191-.191-.192-.191-.465 0-.273.191-.465.191-.191.465-.191l5.688 0q.273 0 .464.191.191.191.191.465z"
-                  fill="#ffffff"
-                />
-              </svg>
+              <ArrowUpRight size={15} color="#ffffff" weight="bold" />
             </button>
           </div>
         </div>
@@ -284,13 +274,7 @@ export default function HomeActionScreen({ initialTask, onCancel, onStart }: Hom
             cursor: "pointer",
           }}
         >
-          {/* X icon */}
-          <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style={{ width: 16, height: 16, flexShrink: 0 }}>
-            <path
-              d="M11.43 10.445q.164.219.164.492 0 .273-.191.465-.192.191-.465.191-.273 0-.438-.219L7 7.875l-3.445 3.445q-.219.219-.492.219-.273 0-.465-.192-.191-.191-.191-.464 0-.273.219-.492l3.445-3.445-3.445-3.5q-.219-.164-.219-.438 0-.273.191-.465.192-.191.465-.191.273 0 .492.164l3.445 3.5 3.5-3.5q.164-.164.438-.164.273 0 .465.191.191.191.191.465 0 .273-.164.492L7.93 7l3.5 3.445z"
-              fill="#ffffff"
-            />
-          </svg>
+          <X size={16} color="#ffffff" weight="bold" />
           Cancel
         </button>
 

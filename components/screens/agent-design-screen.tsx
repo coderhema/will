@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowLeft } from "@phosphor-icons/react";
 import WillLogo from "@/components/will-logo";
 
 interface AgentDesignScreenProps {
@@ -32,12 +33,7 @@ export default function AgentDesignScreen({ task, detail, onApprove, onBack }: A
           onClick={onBack}
           style={{ background: "none", border: "none", cursor: "pointer", padding: 0, lineHeight: 0 }}
         >
-          <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" style={{ width: 20, height: 20 }}>
-            <path
-              d="M6.9 2.352q-.096.014-.168.051-.068.034-2.177 2.136-2.105 2.099-2.146 2.167-.113.181-.072.407.027.096.068.174.044.075 2.157 2.177l1.682 1.678q.376.366.516.465.085.055.198.055h.041q.239 0 .42-.181.113-.113.147-.28.034-.167-.02-.321-.027-.085-.26-.321-.232-.239-1.364-1.374-1.582-1.582-1.582-1.596 0-.014 3.428-.014l3.011 0q.448 0 .53-.034.085-.038.167-.12.085-.085.133-.188.051-.106.051-.232 0-.126-.041-.239-.099-.195-.294-.294l-.085-.041-3.445 0q-3.456 0-3.456-.014 0-.014 1.582-1.596 1.132-1.135 1.364-1.371.232-.239.26-.325.068-.208-.003-.403-.068-.198-.243-.301-.174-.106-.4-.065z"
-              fill="#ffffff"
-            />
-          </svg>
+          <ArrowLeft size={20} color="#ffffff" weight="bold" />
         </button>
 
         {/* Amber READY logo */}
